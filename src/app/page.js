@@ -1,8 +1,6 @@
 import Link from 'next/link'
-import { revalidatePath } from 'next/cache'
 
 export default async function Home() {
-  revalidatePath('/articulos')
 
   return (
     <section>
