@@ -1,6 +1,5 @@
 import { sql } from '@vercel/postgres';
 
-
 async function crearTabla() {
     try {
         const result = await sql`
