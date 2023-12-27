@@ -60,5 +60,6 @@ export async function deleteArticulo(formData) {
   } catch (error) {
     console.log(error);
   }
+
   redirect('/articulos');
 }

@@ -1,8 +1,6 @@
-'use client'
-import { useFormStatus } from 'react-dom'
+import Button from '@/components/Button'
  
 function Form({ action, title, articulo, disabled }) {
-    const { pending } = useFormStatus()
 
     return (
         <form action={action} >
@@ -21,9 +19,7 @@ function Form({ action, title, articulo, disabled }) {
                     placeholder='precio'
                     defaultValue={articulo?.precio} />
             </fieldset>
-            <button type='submit' disabled={pending}> 
-                {pending ? 'Realizando operación...' :  title }
-            </button>
+            <Button title={title} />
         </form>
     )
 }
