@@ -1,16 +1,16 @@
 'use server'
-import { db } from '@/lib/mysql'
+import { sql } from '@vercel/postgres';
+import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 
 export async function getArticulos() {
   try {
-    const results = await db.query('select * from articulos');
-    // console.log(results);
-    return results;
+    const { rows } = await sql`select * from articulos;`
+    return rows;
   } catch (error) {
     // console.log(error);  
-    return null;    
+    return null;
   }
 }
 
@@ -20,11 +20,11 @@ export async function newArticulo(formData) {
     const descripcion = formData.get('descripcion');
     const precio = formData.get('precio');
 
-    console.log(precio);
-
-    const query = 'insert into articulos(nombre,descripcion,precio) values (?, ?, ?)';
-    const results = await db.query(query, [nombre, descripcion, precio]);
+    const results = await sql`
+    insert into articulos(nombre,descripcion,precio) values (${nombre}, ${descripcion}, ${precio});
+    `
     console.log(results);
+    revalidatePath('/articulos')
   } catch (error) {
     console.log(error);
   }
@@ -39,9 +39,11 @@ export async function editArticulo(formData) {
   const precio = formData.get('precio')
 
   try {
-    const query = 'update articulos set ? where id = ? ';
-    const results = await db.query(query, [{nombre, descripcion, precio}, id]);
+    const results = await sql` 
+    update articulos set nombre=${nombre}, descripcion=${descripcion}, precio=${precio} where id = ${id};
+    `
     console.log(results);
+    revalidatePath('/articulos')
   } catch (error) {
     console.log(error);
   }
@@ -52,9 +54,9 @@ export async function deleteArticulo(formData) {
   try {
     const id = formData.get('id');
 
-    const query = 'delete from articulos where id = ?';
-    const results = await db.query(query, [id]);
+    const results = await sql`delete from articulos where id = ${id};`
     console.log(results);
+    revalidatePath('/articulos')
   } catch (error) {
     console.log(error);
   }

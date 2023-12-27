@@ -1,0 +1,16 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "description": "",
+  "main": "db.js",
+  "type": "module",
+  "scripts": {
+    "db": "npm install && node --env-file=.env db.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/postgres": "^0.5.1"
+  }
+}

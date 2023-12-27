@@ -1,9 +1,11 @@
 import Form from "@/components/Form"
-import { db } from "@/lib/mysql"
+import { sql } from '@vercel/postgres';
 import { deleteArticulo } from "@/lib/actions"
 
 async function page({ searchParams }) {
-  const [articulo] = await db.query('select * from articulos where id = ?', [searchParams.id]);
+  const { rows }  = await sql`select * from articulos where id = ${searchParams.id};` 
+  const articulo = rows[0];
+  
   return (
     <div>
       <h3>Eliminar artículo {searchParams.id}</h3>
