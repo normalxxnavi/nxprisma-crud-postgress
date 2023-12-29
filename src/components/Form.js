@@ -17,7 +17,7 @@ function Form({ action, title, articulo, disabled }) {
                 <label htmlFor='precio'>Precio</label>
                 <input type='number' id='precio' name='precio' min='0' step={0.01}
                     placeholder='precio'
-                    defaultValue={articulo?.precio} />
+                    defaultValue={Number(articulo?.precio)} />
             </fieldset>
             <Button title={title} />
         </form>

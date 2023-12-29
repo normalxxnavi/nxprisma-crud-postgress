@@ -1,12 +1,15 @@
 import Form from "@/components/Form"
-import { sql } from '@vercel/postgres';
+import { prisma } from '@/lib/prisma'
 import { editArticulo } from "@/lib/actions"
 
 export const dynamic = 'force-dynamic'
 
 async function page({searchParams}) {
-  const { rows }  = await sql`select * from articulos where id = ${searchParams.id};` 
-  const articulo = rows[0];
+  const articulo = await prisma.articulo.findUnique({
+    where: {
+      id: Number(searchParams.id),
+    },
+  })
 
   return (
     <div>

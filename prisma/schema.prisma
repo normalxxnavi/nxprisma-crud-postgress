@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Articulo {
+  id          Int       @id @default(autoincrement())
+  nombre      String
+  descripcion String?
+  precio      Decimal?  @db.Decimal(10, 2)
+  createdAt   DateTime  @default(now()) @db.Timestamp(6)
+  proveedores ArticuloProveedor[]
+
+  @@map("articulos")
+}
+
+model Proveedor {
+  id          Int       @id @default(autoincrement())
+  nombre      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  articulos   ArticuloProveedor[]
+
+  @@map("proveedores")
+}
+
+model ArticuloProveedor {
+  proveedor   Proveedor @relation(fields: [proveedorId], references: [id])
+  proveedorId Int
+  articulo    Articulo  @relation(fields: [articuloId], references: [id])
+  articuloId  Int
+  assignedAt  DateTime  @default(now())
+
+  @@id([proveedorId, articuloId])
+  @@map("articulo-proveedor")
+}

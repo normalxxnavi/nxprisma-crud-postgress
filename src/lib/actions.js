@@ -1,13 +1,12 @@
 'use server'
-import { sql } from '@vercel/postgres';
+import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-
 export async function getArticulos() {
   try {
-    const { rows } = await sql`select * from articulos;`
-    return rows;
+    const articulos = await prisma.articulo.findMany()
+    return articulos;
   } catch (error) {
     // console.log(error);  
     return null;
@@ -16,14 +15,15 @@ export async function getArticulos() {
 
 export async function newArticulo(formData) {
   try {
-    const nombre = formData.get('nombre');
-    const descripcion = formData.get('descripcion');
-    const precio = formData.get('precio');
+    const nombre = formData.get('nombre')
+    const descripcion = formData.get('descripcion')
+    const precio = Number( formData.get('precio')) 
 
-    const results = await sql`
-    insert into articulos(nombre,descripcion,precio) values (${nombre}, ${descripcion}, ${precio});
-    `
-    console.log(results);
+    const articulo = await prisma.articulo.create({
+      data: { nombre, descripcion, precio  },
+    })
+
+    console.log(articulo);
     revalidatePath('/articulos')
   } catch (error) {
     console.log(error);
@@ -33,16 +33,17 @@ export async function newArticulo(formData) {
 
 
 export async function editArticulo(formData) {
-  const id = formData.get('id')
+  const id = Number( formData.get('id') )
   const nombre = formData.get('nombre')
   const descripcion = formData.get('descripcion')
-  const precio = formData.get('precio')
+  const precio = Number( formData.get('precio')) 
 
   try {
-    const results = await sql` 
-    update articulos set nombre=${nombre}, descripcion=${descripcion}, precio=${precio} where id = ${id};
-    `
-    console.log(results);
+    const articulo = await prisma.articulo.update({
+      where: { id },
+      data: {  nombre, descripcion, precio },
+    })
+    console.log(articulo);
     revalidatePath('/articulos')
   } catch (error) {
     console.log(error);
@@ -52,10 +53,14 @@ export async function editArticulo(formData) {
 
 export async function deleteArticulo(formData) {
   try {
-    const id = formData.get('id');
-
-    const results = await sql`delete from articulos where id = ${id};`
-    console.log(results);
+    const id = Number( formData.get('id') )
+  
+    const articulo = await prisma.articulo.delete({
+      where: {
+        id: id,
+      },
+    })
+    console.log(articulo);
     revalidatePath('/articulos')
   } catch (error) {
     console.log(error);
