@@ -1,34 +1,14 @@
-## Crear base de datos
+## Dar de alta la base de datos
 
-**Pasos**
+Para hacer funcionar este proyecto necesitarás una base de datos. 
 
-1. Entrar en la siguiente carpeta:
+El proyecto está pensado para trabajar con Postgres, pero con unos pequeños ajustes puedes usar otro tipo de base de datos.
 
-```sh
-cd src/database
-```
+Puedes obtener una base de datos Postgres gratuita en uno de los siguientes sitios:
 
-2. Crear archivo `.env`:
-
-```sh
-mv .env.example  .env
-nano  .env
-```
-
-3. Completar la URL de tu base de datos en Vercel:
-
-```
-POSTGRES_URL="postgres://..."
-```
-
-El formato de la URL es el siguiente `POSTGRES_URL="postgres://usuario:password@host:5432/basedatos"`
-
-
-4. Ejecutar script:
-
-```sh
-npm run db
-```
+- [Vercel](https://vercel.com/docs/storage/vercel-postgres)
+- [Supabase](https://supabase.com/)
+  
 
 ## Configurar aplicación
 
@@ -43,16 +23,16 @@ mv .env.example  .env
 nano  .env
 ```
 
-2. Completar la URL de tu base de datos en Vercel:
+2. Editar la variable de entorno correspondiente a la URL de tu base de datos en Vercel o Supabase:
 
 ```
-POSTGRES_URL="postgres://..."
+DATABASE_URL="postgres://..."
 ```
 
-El formato de la URL es el siguiente `POSTGRES_URL="postgres://usuario:password@host:5432/basedatos"`
+El formato de la URL es el siguiente `DATABASE_URL="postgres://usuario:password@host:5432/basedatos"`
 
 
+## Paquetes usados para Prisma
 
-## Paquetes usados para Postgres de Vercel
-
-- `@vercel/postgres`
+- `prisma`
+- `@prisma/client`
