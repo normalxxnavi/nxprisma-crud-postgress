@@ -1,5 +1,5 @@
 import Form from "@/components/Form"
-import { prisma } from '@/lib/prisma'
+import prisma from '@/lib/prisma'
 import { deleteArticulo } from "@/lib/actions"
 
 export const dynamic = 'force-dynamic'

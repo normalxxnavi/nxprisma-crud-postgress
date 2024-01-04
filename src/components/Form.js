@@ -1,6 +1,6 @@
 import Button from '@/components/Button'
  
-function Form({ action, title, articulo, disabled }) {
+function Form({ action, title, articulo, disabled=false }) {
 
     return (
         <form action={action} >

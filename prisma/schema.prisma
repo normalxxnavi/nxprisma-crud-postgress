@@ -4,15 +4,17 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 model Articulo {
   id          Int       @id @default(autoincrement())
   nombre      String
   descripcion String?
-  precio      Decimal?  @db.Decimal(10, 2)
-  createdAt   DateTime  @default(now()) @db.Timestamp(6)
+  precio      Decimal? 
+  createdAt   DateTime  @default(now()) 
+  updatedAt   DateTime  @updatedAt
   proveedores ArticuloProveedor[]
 
   @@map("articulos")
