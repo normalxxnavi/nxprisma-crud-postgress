@@ -21,7 +21,7 @@ model Articulo {
   precio      Decimal? 
   createdAt   DateTime  @default(now()) 
   updatedAt   DateTime  @updatedAt
-  proveedores ArticuloProveedor[]
+  proveedores Proveedor[]
 
   @@map("articulos")
 }
@@ -32,18 +32,7 @@ model Proveedor {
   nacional    Boolean?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  articulos   ArticuloProveedor[]
+  articulos   Articulo[]
 
   @@map("proveedores")
-}
-
-model ArticuloProveedor {
-  proveedor   Proveedor @relation(fields: [proveedorId], references: [id])
-  proveedorId Int
-  articulo    Articulo  @relation(fields: [articuloId], references: [id])
-  articuloId  Int
-  assignedAt  DateTime  @default(now())
-
-  @@id([proveedorId, articuloId])
-  @@map("articulo-proveedor")
 }
