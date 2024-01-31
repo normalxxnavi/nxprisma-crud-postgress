@@ -68,3 +68,70 @@ export async function deleteArticulo(formData) {
 
   redirect('/articulos');
 }
+
+export async function getProveedores() {
+  try {
+    const proveedores = await prisma.proveedor.findMany()
+    return proveedores;
+  } catch (error) {
+    console.log(error);  
+    return null;
+  }
+}
+
+export async function newProveedores(formData) {
+  try {
+    const nombre = formData.get('nombre')
+    let nacional = formData.get('nacional')
+    
+    nacional = nacional == null ? false : true
+    // nacional=Boolean(nacional);
+    console.log(nacional);
+    const proveedor = await prisma.proveedor.create({
+      data: { nombre, nacional  },
+    })
+
+    console.log(proveedor);
+    revalidatePath('/proveedores')
+  } catch (error) {
+    console.log(error);
+  }
+  redirect('/proveedores');
+}
+
+export async function editProveedor(formData) {
+  const id = Number( formData.get('id') )
+  const nombre = formData.get('nombre')
+  let nacional = formData.get('nacional')
+
+  nacional = nacional == null ? false : true
+  try {
+    const proveedor = await prisma.proveedor.update({
+      where: { id },
+      data: {  nombre, nacional },
+    })
+    console.log(proveedor);
+    revalidatePath('/proveedores')
+  } catch (error) {
+    console.log(error);
+  }
+  redirect('/proveedores');
+}
+
+export async function deleteProveedores(formData) {
+  try {
+    const id = Number( formData.get('id') )
+  
+    const proveedor = await prisma.proveedor.delete({
+      where: {
+        id: id,
+      },
+    })
+    console.log(proveedor);
+    revalidatePath('/proveedores')
+  } catch (error) {
+    console.log(error);
+  }
+
+  redirect('/proveedores');
+}
